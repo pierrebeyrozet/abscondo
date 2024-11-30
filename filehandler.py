@@ -55,9 +55,9 @@ class FileHandler:
         f_start = all_files[0]
         for content in all_files[1:]:
             original_f_path = content.split(' ')[0]
-            new_f_path = Path('assets').joinpath(root_name) / Path(original_f_path.split(root_name)[1]).name
+            new_f_path = Path('assets').joinpath(root_name) / Path(original_f_path.split(root_name)[1][1:])# .name
             new_f_path.parent.mkdir(exist_ok=True, parents=True)
-            new_f_path.write_text(f_start + content.replace("\r\n", "\n"))
+            new_f_path.write_text(f_start + content.replace("\r\n", "\n"), encoding="utf-8")
         return
 
 
