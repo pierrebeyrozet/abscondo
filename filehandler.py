@@ -5,12 +5,13 @@ from encrypter import Encrypter
 
 
 class FileHandler:
-    def __init__(self, carrier_file, directory_to_encrypt=''):
+    def __init__(self, carrier_file, directory_to_encrypt='', extensions='.py'):
         self.source_file = carrier_file
         self.copy_of_file = ''
         self.size_byte_len = 32
         self.dir_to_encrypt = directory_to_encrypt
         self.encrypter = Encrypter(b"5A44555D9D8BB7ADB345243351BABT56")
+        self.file_extensions = extensions.split(',')
 
     def create_carrier_copy(self):
         dir_name = Path(self.source_file).parent.resolve()
@@ -39,7 +40,8 @@ class FileHandler:
         data = ''
         for root, dirs, files in os.walk(self.dir_to_encrypt):
             for file in files:
-                if file[-3:] == '.py':
+                print(file)
+                if os.path.splitext(file)[-1] in self.file_extensions and not '-checkpoint.ipynb' in file:
                     file_full_name = os.path.join(root, file)
                     with open(file_full_name, 'rb') as f:
                         data += f'\n#  ------- START OF FILE {file_full_name} -------\n'
